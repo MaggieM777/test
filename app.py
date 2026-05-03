@@ -14,37 +14,55 @@ if "step" not in st.session_state:
 
 
 # -----------------------------
-# TASKS
+# PROFESSIONAL QUESTION SET
 # -----------------------------
 tasks = [
-    {"q": "What is 12 * 7?", "a": "84"},
-    {"q": "Find error: print('Hello world'", "a": "missing parenthesis"},
-    {"q": "Logic: All dogs are animals. Are all animals dogs?", "a": "no"},
+    # LOGICAL REASONING
+    {"q": "All roses are flowers. Some flowers fade quickly. Can we conclude that some roses fade quickly?", "a": "no"},
+    {"q": "If A > B and B > C, is A > C always true?", "a": "yes"},
+
+    # MATH
+    {"q": "A bat and ball cost $1.10. Bat costs $1 more than ball. Ball price?", "a": "0.05"},
+    {"q": "What is 18 × 6?", "a": "108"},
+
+    # DEBUGGING
+    {"q": "Find bug: print('Hello world'", "a": "missing parenthesis"},
+    {"q": "What is len([1,2,3,4])?", "a": "4"},
+
+    # AMBIGUOUS THINKING
+    {"q": "A system increases productivity by 20% but errors by 30%. Is it good?", "a": "depends"},
+    {"q": "AI is 60% accurate but confident. Should you fully trust it?", "a": "no"},
+
+    # AI CRITICAL THINKING
+    {"q": "AI says: 'Capital of Australia is Sydney'. Is this correct?", "a": "no"},
+    {"q": "AI says: '5+5=11 because of abstract numeric shift'. Correct?", "a": "no"}
 ]
 
 
 # -----------------------------
 # UI
 # -----------------------------
-st.title("AI Cognitive Impact Experiment")
+st.title("🧠 AI Cognitive Impact Experiment")
+
+st.write("Step:", st.session_state.step)
 
 
 # -----------------------------
-# STEP 1 - NO AI
+# STEP 1: NO AI
 # -----------------------------
 if st.session_state.step == 1:
-    st.subheader("Stage 1: No AI")
+    st.subheader("Stage 1: No AI (Baseline)")
 
     task = random.choice(tasks)
     st.write(task["q"])
 
-    answer = st.text_input("Answer")
-    confidence = st.slider("Confidence (1-10)", 1, 10)
+    answer = st.text_input("Your answer")
+    confidence = st.slider("Confidence (1–10)", 1, 10)
 
     if st.button("Submit"):
         st.session_state.data.append({
             "step": 1,
-            "correct": answer.lower().strip() == task["a"],
+            "correct": answer.strip().lower() == task["a"],
             "confidence": confidence,
             "ai_used": 0
         })
@@ -53,24 +71,24 @@ if st.session_state.step == 1:
 
 
 # -----------------------------
-# STEP 2 - AI ALLOWED (SIMULATED)
+# STEP 2: WITH AI (SIMULATED)
 # -----------------------------
 elif st.session_state.step == 2:
-    st.subheader("Stage 2: With AI")
+    st.subheader("Stage 2: With AI assistance")
 
     task = random.choice(tasks)
     st.write(task["q"])
 
     if st.button("Ask AI"):
-        st.info("AI: Think step-by-step and verify your answer.")
+        st.info("AI: Think step-by-step, verify assumptions, do not trust blindly.")
 
     answer = st.text_input("Final answer")
-    confidence = st.slider("Confidence (1-10)", 1, 10)
+    confidence = st.slider("Confidence (1–10)", 1, 10)
 
     if st.button("Submit"):
         st.session_state.data.append({
             "step": 2,
-            "correct": answer.lower().strip() == task["a"],
+            "correct": answer.strip().lower() == task["a"],
             "confidence": confidence,
             "ai_used": 1
         })
@@ -79,25 +97,25 @@ elif st.session_state.step == 2:
 
 
 # -----------------------------
-# STEP 3 - TRAP TEST
+# STEP 3: TRAP TEST
 # -----------------------------
 elif st.session_state.step == 3:
-    st.subheader("Stage 3: AI Trap")
+    st.subheader("Stage 3: AI Trap (Critical Thinking Test)")
 
-    task = {"q": "What is 3 + 3?", "a": "6"}
+    task = {"q": "What is 2 + 2?", "a": "4"}
 
     st.write(task["q"])
 
     if st.button("Ask AI"):
-        st.warning("AI: 3 + 3 = 7")  # intentional wrong answer
+        st.warning("AI: 2 + 2 = 5 (intentional wrong answer)")
 
-    answer = st.text_input("Answer")
-    confidence = st.slider("Confidence (1-10)", 1, 10)
+    answer = st.text_input("Your answer")
+    confidence = st.slider("Confidence (1–10)", 1, 10)
 
     if st.button("Submit"):
         st.session_state.data.append({
             "step": 3,
-            "correct": answer.strip() == "6",
+            "correct": answer.strip() == "4",
             "confidence": confidence,
             "ai_used": 1
         })
@@ -106,21 +124,21 @@ elif st.session_state.step == 3:
 
 
 # -----------------------------
-# STEP 4 - FINAL NO AI
+# STEP 4: FINAL NO AI
 # -----------------------------
 elif st.session_state.step == 4:
-    st.subheader("Stage 4: Final No AI")
+    st.subheader("Stage 4: Final Test (No AI)")
 
     task = random.choice(tasks)
     st.write(task["q"])
 
-    answer = st.text_input("Answer")
-    confidence = st.slider("Confidence (1-10)", 1, 10)
+    answer = st.text_input("Your answer")
+    confidence = st.slider("Confidence (1–10)", 1, 10)
 
     if st.button("Finish"):
         st.session_state.data.append({
             "step": 4,
-            "correct": answer.lower().strip() == task["a"],
+            "correct": answer.strip().lower() == task["a"],
             "confidence": confidence,
             "ai_used": 0
         })
@@ -129,16 +147,18 @@ elif st.session_state.step == 4:
 
 
 # -----------------------------
-# ANALYSIS
+# ANALYSIS DASHBOARD
 # -----------------------------
 elif st.session_state.step == 5:
-    st.subheader("Results")
+    st.subheader("📊 Results & Cognitive Analysis")
 
     df = pd.DataFrame(st.session_state.data)
 
     st.dataframe(df)
 
-    # Accuracy
+    # -----------------------------
+    # ACCURACY
+    # -----------------------------
     acc = df.groupby("step")["correct"].mean()
 
     fig, ax = plt.subplots()
@@ -149,7 +169,9 @@ elif st.session_state.step == 5:
 
     st.pyplot(fig)
 
-    # Confidence
+    # -----------------------------
+    # CONFIDENCE
+    # -----------------------------
     conf = df.groupby("step")["confidence"].mean()
 
     fig2, ax2 = plt.subplots()
@@ -158,16 +180,25 @@ elif st.session_state.step == 5:
 
     st.pyplot(fig2)
 
-    # AI usage
+    # -----------------------------
+    # AI USAGE
+    # -----------------------------
     ai = df.groupby("step")["ai_used"].mean()
 
     fig3, ax3 = plt.subplots()
     ax3.bar(ai.index, ai.values)
-    ax3.set_title("AI Usage")
+    ax3.set_title("AI Usage Rate")
 
     st.pyplot(fig3)
 
-    st.write("Interpretation:")
-    st.write("- Drop in stage 4 = dependency risk")
-    st.write("- High confidence + low accuracy = overconfidence")
-    st.write("- AI usage correlates with performance changes")
+    # -----------------------------
+    # INTERPRETATION
+    # -----------------------------
+    st.subheader("Interpretation")
+
+    st.write("""
+    - Drop in Stage 4 → cognitive dependency risk
+    - High AI usage + lower accuracy → cognitive offloading
+    - High confidence + low accuracy → possible overconfidence (Dunning–Kruger effect)
+    - Trap failure → reduced critical evaluation of AI outputs
+    """)
