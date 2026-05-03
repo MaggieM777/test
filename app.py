@@ -42,7 +42,7 @@ tasks = [
 # -----------------------------
 # UI
 # -----------------------------
-st.title("🧠 AI Cognitive Impact Experiment")
+st.title("AI Cognitive Impact Experiment")
 
 st.write("Step:", st.session_state.step)
 
