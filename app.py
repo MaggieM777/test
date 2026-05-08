@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # =====================================================
-# STYLING
+# CUSTOM STYLING
 # =====================================================
 
 st.markdown("""
@@ -25,63 +25,160 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-.main {
-    background-color: #0e1117;
+/* Main Background */
+
+.stApp {
+    background-color: #0B1120;
     color: white;
 }
 
+/* Remove top spacing */
+
 .block-container {
     padding-top: 2rem;
+    padding-bottom: 2rem;
 }
+
+/* Typography */
 
 .big-title {
     font-size: 52px;
     font-weight: 800;
-    margin-bottom: 0;
+    color: white;
+    margin-bottom: 10px;
 }
 
 .subtitle {
     color: #9CA3AF;
     font-size: 18px;
+    line-height: 1.8;
     margin-bottom: 30px;
 }
 
+/* Cards */
+
 .card {
-    background: #161b22;
-    padding: 25px;
-    border-radius: 15px;
-    border: 1px solid #30363d;
+    background: #111827;
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid #1F2937;
+    color: white;
     margin-bottom: 20px;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
 }
+
+.card b {
+    color: white;
+}
+
+/* Question Box */
 
 .question-box {
-    background: #111827;
-    padding: 25px;
-    border-radius: 15px;
-    border-left: 5px solid #3B82F6;
-    font-size: 18px;
+    background: linear-gradient(
+        135deg,
+        #0F172A,
+        #111827
+    );
+
+    padding: 30px;
+    border-radius: 18px;
+
+    border-left: 6px solid #3B82F6;
+
     color: white;
-    line-height: 1.7;
+
+    font-size: 22px;
+    line-height: 1.8;
+    font-weight: 500;
+
+    margin-bottom: 20px;
+
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
 }
 
-.stButton>button {
+.question-box p {
+    color: white !important;
+    margin: 0;
+}
+
+/* Buttons */
+
+.stButton > button {
     width: 100%;
-    border-radius: 12px;
     height: 3.2em;
+
+    border-radius: 12px;
+
+    border: none;
+
+    background: linear-gradient(
+        90deg,
+        #2563EB,
+        #3B82F6
+    );
+
+    color: white;
     font-size: 16px;
     font-weight: 600;
+
+    transition: 0.2s ease;
 }
 
-.metric-card {
-    background: #161b22;
-    padding: 20px;
-    border-radius: 15px;
-    text-align: center;
+.stButton > button:hover {
+    transform: scale(1.01);
 }
 
-.small-label {
-    color: #9CA3AF;
-    font-size: 14px;
+/* Inputs */
+
+.stTextInput input {
+    background-color: #111827 !important;
+    color: white !important;
+
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+
+    height: 3em;
+}
+
+.stTextInput label {
+    color: white !important;
+    font-weight: 500;
+}
+
+/* Slider */
+
+.stSlider label {
+    color: white !important;
+}
+
+/* Metrics */
+
+[data-testid="metric-container"] {
+    background: #111827;
+    border: 1px solid #1F2937;
+    padding: 15px;
+    border-radius: 16px;
+}
+
+[data-testid="stMetricLabel"] {
+    color: #D1D5DB;
+}
+
+[data-testid="stMetricValue"] {
+    color: white;
+}
+
+/* Tables */
+
+[data-testid="stDataFrame"] {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Success / Warning */
+
+.stAlert {
+    border-radius: 14px;
 }
 
 </style>
@@ -104,8 +201,6 @@ if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
 
 if "question_sets" not in st.session_state:
-
-    # Randomized once only
     st.session_state.question_sets = {
         1: [],
         2: [],
@@ -117,10 +212,6 @@ if "question_sets" not in st.session_state:
 # =====================================================
 
 questions = [
-
-    # =================================================
-    # LOGIC
-    # =================================================
 
     {
         "category": "Logic",
@@ -155,10 +246,6 @@ must A > C?
         "answer": "yes"
     },
 
-    # =================================================
-    # COGNITIVE REFLECTION
-    # =================================================
-
     {
         "category": "Cognitive Reflection",
         "difficulty": 3,
@@ -178,14 +265,11 @@ How much does the ball cost?
         "question": """
 Five machines take 5 minutes to make 5 products.
 
-How long would 100 machines take to make 100 products?
+How long would 100 machines take
+to make 100 products?
 """,
         "answer": "5"
     },
-
-    # =================================================
-    # STATISTICS
-    # =================================================
 
     {
         "category": "Statistics",
@@ -207,14 +291,10 @@ Can a positive test still be false?
 A company increases revenue by 20%
 then loses 20%.
 
-Does it return to the original revenue?
+Does it return to the original value?
 """,
         "answer": "no"
     },
-
-    # =================================================
-    # CRITICAL THINKING
-    # =================================================
 
     {
         "category": "Critical Thinking",
@@ -240,10 +320,6 @@ Should humans still verify critical decisions?
         "answer": "yes"
     },
 
-    # =================================================
-    # AI VERIFICATION
-    # =================================================
-
     {
         "category": "AI Verification",
         "difficulty": 3,
@@ -252,7 +328,7 @@ An AI says:
 
 'Correlation always implies causation.'
 
-Is the statement scientifically correct?
+Is this scientifically correct?
 """,
         "answer": "no"
     },
@@ -272,7 +348,7 @@ Is this necessarily true?
 ]
 
 # =====================================================
-# INITIALIZE RANDOMIZED SETS
+# RANDOMIZED STAGES
 # =====================================================
 
 if st.session_state.question_sets[1] == []:
@@ -285,12 +361,15 @@ if st.session_state.question_sets[1] == []:
     st.session_state.question_sets[3] = shuffled[0:4]
 
 # =====================================================
-# INTRO
+# INTRO SCREEN
 # =====================================================
 
 if st.session_state.step == 0:
 
-    st.markdown('<div class="big-title"> AI Cognitive Dependency Experiment</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="big-title">🧠 AI Cognitive Dependency Experiment</div>',
+        unsafe_allow_html=True
+    )
 
     st.markdown("""
 <div class="subtitle">
@@ -299,7 +378,7 @@ This experiment evaluates:
 
 • Analytical reasoning  
 • AI trust calibration  
-• Critical thinking  
+• Cognitive reflection  
 • Confidence vs accuracy  
 • Susceptibility to misleading AI outputs  
 
@@ -313,15 +392,17 @@ You will complete 3 stages:
 """, unsafe_allow_html=True)
 
     st.info("""
-This is not an IQ test.
+This is NOT an IQ test.
 
-The experiment measures how reasoning changes
-when AI systems influence decision making.
+The goal is to measure how reasoning changes
+when AI systems influence human decisions.
 """)
 
     if st.button("Start Experiment"):
+
         st.session_state.step = 1
         st.session_state.start_time = time.time()
+
         st.rerun()
 
 # =====================================================
@@ -336,35 +417,52 @@ elif st.session_state.step in [1, 2, 3]:
         3: "Stage 3 — Misleading AI Environment"
     }
 
-    current_questions = st.session_state.question_sets[st.session_state.step]
+    current_questions = st.session_state.question_sets[
+        st.session_state.step
+    ]
 
-    q = current_questions[st.session_state.question_index]
+    q = current_questions[
+        st.session_state.question_index
+    ]
 
     st.title(stage_titles[st.session_state.step])
 
-    col1, col2 = st.columns([3, 1])
+    # =================================================
+    # TOP INFO
+    # =================================================
+
+    col1, col2 = st.columns([4, 1])
 
     with col1:
+
         st.markdown(
             f"""
 <div class="card">
-<b>Category:</b> {q['category']}<br>
+
+<b>Category:</b> {q['category']}<br><br>
+
 <b>Difficulty:</b> {q['difficulty']}/3
+
 </div>
 """,
             unsafe_allow_html=True
         )
 
     with col2:
+
         st.metric(
             "Question",
             f"{st.session_state.question_index + 1}/{len(current_questions)}"
         )
 
+    # =================================================
+    # QUESTION DISPLAY
+    # =================================================
+
     st.markdown(
         f"""
 <div class="question-box">
-{q['question']}
+<p>{q['question']}</p>
 </div>
 """,
         unsafe_allow_html=True
@@ -379,9 +477,13 @@ elif st.session_state.step in [1, 2, 3]:
         if st.button("Consult AI Assistant"):
 
             helpful = [
+
                 "Consider whether the conclusion logically follows from the premises.",
+
                 "Check whether percentages are symmetric.",
+
                 "Think about false positives in statistical testing.",
+
                 "Separate correlation from causation."
             ]
 
@@ -392,21 +494,25 @@ elif st.session_state.step in [1, 2, 3]:
         if st.button("Consult AI Assistant"):
 
             misleading = [
-                "Yes, correlation always implies causation.",
-                "A positive medical test is almost always correct.",
-                "A 20% increase and decrease cancel out perfectly.",
+
+                "Correlation always implies causation.",
+
+                "Positive medical tests are almost always correct.",
+
+                "A 20% increase and decrease perfectly cancel out.",
+
                 "Highly accurate AI systems never require verification."
             ]
 
             st.error(random.choice(misleading))
 
     # =================================================
-    # ANSWER SECTION
+    # ANSWER INPUT
     # =================================================
 
     answer = st.text_input(
         "Your Answer",
-        placeholder="Type your answer here..."
+        placeholder="Type your answer..."
     )
 
     confidence = st.slider(
@@ -422,25 +528,42 @@ elif st.session_state.step in [1, 2, 3]:
 
     if st.button("Submit Answer"):
 
-        elapsed = round(time.time() - st.session_state.start_time, 2)
+        elapsed = round(
+            time.time() - st.session_state.start_time,
+            2
+        )
 
         user_answer = answer.strip().lower()
 
-        correct = user_answer == q["answer"]
+        correct = (
+            user_answer == q["answer"]
+        )
 
         st.session_state.results.append({
+
             "stage": st.session_state.step,
+
             "category": q["category"],
+
             "difficulty": q["difficulty"],
+
             "user_answer": user_answer,
+
             "expected_answer": q["answer"],
+
             "correct": int(correct),
+
             "confidence": confidence,
+
             "time_sec": elapsed,
-            "used_ai": int(st.session_state.step != 1)
+
+            "used_ai": int(
+                st.session_state.step != 1
+            )
         })
 
         st.session_state.question_index += 1
+
         st.session_state.start_time = time.time()
 
         # NEXT STAGE
@@ -450,13 +573,15 @@ elif st.session_state.step in [1, 2, 3]:
             st.session_state.question_index = 0
             st.session_state.step += 1
 
+        # FINISH
+
         if st.session_state.step >= 4:
             st.session_state.step = 4
 
         st.rerun()
 
 # =====================================================
-# RESULTS
+# RESULTS PAGE
 # =====================================================
 
 elif st.session_state.step == 4:
@@ -465,17 +590,26 @@ elif st.session_state.step == 4:
 
     df = pd.DataFrame(st.session_state.results)
 
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(
+        df,
+        use_container_width=True
+    )
 
     # =================================================
     # METRICS
     # =================================================
 
-    accuracy = df["correct"].mean() * 100
+    accuracy = (
+        df["correct"].mean() * 100
+    )
 
-    avg_confidence = df["confidence"].mean()
+    avg_confidence = (
+        df["confidence"].mean()
+    )
 
-    avg_time = df["time_sec"].mean()
+    avg_time = (
+        df["time_sec"].mean()
+    )
 
     # =================================================
     # WEIGHTED SCORE
@@ -486,20 +620,31 @@ elif st.session_state.step == 4:
     for _, row in df.iterrows():
 
         if row["correct"] == 1:
+
             weighted_score += row["confidence"]
 
         else:
-            weighted_score -= row["confidence"] * 0.5
+
+            weighted_score -= (
+                row["confidence"] * 0.5
+            )
 
     # =================================================
     # DEPENDENCY SCORE
     # =================================================
 
-    stage1 = df[df["stage"] == 1]["correct"].mean()
+    stage1 = df[
+        df["stage"] == 1
+    ]["correct"].mean()
 
-    stage3 = df[df["stage"] == 3]["correct"].mean()
+    stage3 = df[
+        df["stage"] == 3
+    ]["correct"].mean()
 
-    dependency = max(0, (stage1 - stage3) * 100)
+    dependency = max(
+        0,
+        (stage1 - stage3) * 100
+    )
 
     # =================================================
     # RESPONSE PATTERN ANALYSIS
@@ -507,9 +652,15 @@ elif st.session_state.step == 4:
 
     answers = df["user_answer"].tolist()
 
-    yes_rate = answers.count("yes") / max(1, len(answers))
+    yes_rate = (
+        answers.count("yes")
+        / max(1, len(answers))
+    )
 
-    repetitive_pattern = yes_rate > 0.8 or yes_rate < 0.2
+    repetitive_pattern = (
+        yes_rate > 0.8
+        or yes_rate < 0.2
+    )
 
     # =================================================
     # DASHBOARD
@@ -518,16 +669,28 @@ elif st.session_state.step == 4:
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Accuracy", f"{accuracy:.1f}%")
+        st.metric(
+            "Accuracy",
+            f"{accuracy:.1f}%"
+        )
 
     with col2:
-        st.metric("Avg Confidence", f"{avg_confidence:.1f}/10")
+        st.metric(
+            "Avg Confidence",
+            f"{avg_confidence:.1f}/10"
+        )
 
     with col3:
-        st.metric("Avg Time", f"{avg_time:.1f}s")
+        st.metric(
+            "Avg Response Time",
+            f"{avg_time:.1f}s"
+        )
 
     with col4:
-        st.metric("Weighted Score", f"{weighted_score:.1f}")
+        st.metric(
+            "Weighted Score",
+            f"{weighted_score:.1f}"
+        )
 
     st.metric(
         "Cognitive Dependency Risk",
@@ -535,10 +698,12 @@ elif st.session_state.step == 4:
     )
 
     # =================================================
-    # CHARTS
+    # CHART 1
     # =================================================
 
-    stage_acc = df.groupby("stage")["correct"].mean()
+    stage_acc = df.groupby(
+        "stage"
+    )["correct"].mean()
 
     fig, ax = plt.subplots()
 
@@ -550,17 +715,23 @@ elif st.session_state.step == 4:
 
     ax.set_xlabel("Stage")
     ax.set_ylabel("Accuracy")
-    ax.set_title("Accuracy Across Experimental Stages")
+    ax.set_title(
+        "Accuracy Across Experimental Stages"
+    )
 
     st.pyplot(fig)
 
     # =================================================
-    # CATEGORY ANALYSIS
+    # CHART 2
     # =================================================
 
-    st.subheader("Category Performance")
+    st.subheader(
+        "Performance by Cognitive Category"
+    )
 
-    category_acc = df.groupby("category")["correct"].mean()
+    category_acc = df.groupby(
+        "category"
+    )["correct"].mean()
 
     fig2, ax2 = plt.subplots()
 
@@ -570,7 +741,6 @@ elif st.session_state.step == 4:
     )
 
     ax2.set_ylabel("Accuracy")
-    ax2.set_title("Performance by Cognitive Category")
 
     plt.xticks(rotation=20)
 
@@ -587,8 +757,8 @@ elif st.session_state.step == 4:
         st.warning("""
 Strong repetitive answer pattern detected.
 
-The participant may have relied on heuristic
-or low-effort answering strategies.
+The participant may have relied on
+heuristic or low-effort response strategies.
 """)
 
     if dependency > 30:
@@ -605,7 +775,7 @@ under misleading AI influence.
         st.warning("""
 Moderate AI dependency detected.
 
-Some evidence of over-reliance on AI assistance.
+Some evidence of AI over-reliance.
 """)
 
     else:
@@ -625,19 +795,27 @@ under AI influence.
 
     if weighted_score > 20 and dependency < 10:
 
-        st.success("Balanced Analytical Thinker")
+        st.success(
+            "Balanced Analytical Thinker"
+        )
 
     elif dependency > 30:
 
-        st.error("AI Susceptibility Profile")
+        st.error(
+            "AI Susceptibility Profile"
+        )
 
     elif avg_confidence > 8 and accuracy < 50:
 
-        st.warning("Overconfidence Pattern Detected")
+        st.warning(
+            "Overconfidence Pattern Detected"
+        )
 
     else:
 
-        st.info("Mixed Cognitive Strategy")
+        st.info(
+            "Mixed Cognitive Strategy"
+        )
 
     # =================================================
     # EXPORT
