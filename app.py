@@ -526,26 +526,19 @@ elif st.session_state.step == 4:
 
     display_df = df.drop(columns=["used_ai"])
 
-st.dataframe(
-    display_df,
-    use_container_width=True
-)
+    st.dataframe(
+        display_df,
+        use_container_width=True
+    )
 
     # =================================================
     # METRICS
     # =================================================
 
-    accuracy = (
-        df["correct"].mean() * 100
-    )
-
-    avg_confidence = (
-        df["confidence"].mean()
-    )
-
-    avg_time = (
-        df["time_sec"].mean()
-    )
+    accuracy = df["correct"].mean() * 100
+    avg_confidence = df["confidence"].mean()
+    avg_time = df["time_sec"].mean()
+    
 
     # =================================================
     # WEIGHTED SCORE
