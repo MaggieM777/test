@@ -4,8 +4,13 @@ import random
 import time
 import matplotlib.pyplot as plt
 
+# =====================================================
+# PAGE CONFIG
+# =====================================================
+
 st.set_page_config(
     page_title="AI Cognitive Dependency Experiment",
+    page_icon="🧠",
     layout="wide"
 )
 
@@ -16,34 +21,65 @@ st.set_page_config(
 st.markdown("""
 <style>
 
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
 .main {
     background-color: #0e1117;
     color: white;
 }
 
-.stButton>button {
-    width: 100%;
-    border-radius: 10px;
-    height: 3em;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.metric-box {
-    padding: 20px;
-    border-radius: 15px;
-    background: #1c1f26;
-    margin-bottom: 10px;
+.block-container {
+    padding-top: 2rem;
 }
 
 .big-title {
-    font-size: 42px;
+    font-size: 52px;
     font-weight: 800;
+    margin-bottom: 0;
 }
 
 .subtitle {
-    color: #9ca3af;
+    color: #9CA3AF;
     font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #161b22;
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid #30363d;
+    margin-bottom: 20px;
+}
+
+.question-box {
+    background: #111827;
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #3B82F6;
+    font-size: 18px;
+}
+
+.stButton>button {
+    width: 100%;
+    border-radius: 12px;
+    height: 3.2em;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.metric-card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.small-label {
+    color: #9CA3AF;
+    font-size: 14px;
 }
 
 </style>
@@ -65,29 +101,78 @@ if "question_index" not in st.session_state:
 if "start_time" not in st.session_state:
     st.session_state.start_time = time.time()
 
+if "question_sets" not in st.session_state:
+
+    # Randomized once only
+    st.session_state.question_sets = {
+        1: [],
+        2: [],
+        3: []
+    }
+
 # =====================================================
 # QUESTION BANK
 # =====================================================
 
 questions = [
 
+    # =================================================
     # LOGIC
+    # =================================================
+
     {
         "category": "Logic",
+        "difficulty": 2,
         "question": """
-A researcher claims:
+All Bloops are Razzies.
+All Razzies are Lazzies.
 
-'All highly intelligent people are good at mathematics.
-Some artists are highly intelligent.'
-
-Can we conclude:
-'Some artists are good at mathematics'?
+Are all Bloops definitely Lazzies?
 """,
         "answer": "yes"
     },
 
     {
         "category": "Logic",
+        "difficulty": 2,
+        "question": """
+Some Lazzies are Bloops.
+
+Does this mean all Bloops are Lazzies?
+""",
+        "answer": "no"
+    },
+
+    {
+        "category": "Logic",
+        "difficulty": 1,
+        "question": """
+If A > B and B > C,
+must A > C?
+""",
+        "answer": "yes"
+    },
+
+    # =================================================
+    # COGNITIVE REFLECTION
+    # =================================================
+
+    {
+        "category": "Cognitive Reflection",
+        "difficulty": 3,
+        "question": """
+A bat and a ball cost $1.10 total.
+
+The bat costs $1 more than the ball.
+
+How much does the ball cost?
+""",
+        "answer": "0.05"
+    },
+
+    {
+        "category": "Cognitive Reflection",
+        "difficulty": 2,
         "question": """
 Five machines take 5 minutes to make 5 products.
 
@@ -96,81 +181,106 @@ How long would 100 machines take to make 100 products?
         "answer": "5"
     },
 
+    # =================================================
+    # STATISTICS
+    # =================================================
+
+    {
+        "category": "Statistics",
+        "difficulty": 3,
+        "question": """
+A disease affects 1 in 1000 people.
+
+A test is 99% accurate.
+
+Can a positive test still be false?
+""",
+        "answer": "yes"
+    },
+
+    {
+        "category": "Statistics",
+        "difficulty": 2,
+        "question": """
+A company increases revenue by 20%
+then loses 20%.
+
+Does it return to the original revenue?
+""",
+        "answer": "no"
+    },
+
+    # =================================================
     # CRITICAL THINKING
+    # =================================================
+
     {
         "category": "Critical Thinking",
+        "difficulty": 2,
         "question": """
-A news article says:
+A headline says:
 
-'People who drink coffee live longer.'
+'Coffee drinkers live longer.'
 
 Does this prove coffee causes longer life?
 """,
         "answer": "no"
     },
 
-    # AI REASONING
+    {
+        "category": "Critical Thinking",
+        "difficulty": 3,
+        "question": """
+An AI system is correct 95% of the time.
+
+Should humans still verify critical decisions?
+""",
+        "answer": "yes"
+    },
+
+    # =================================================
+    # AI VERIFICATION
+    # =================================================
+
     {
         "category": "AI Verification",
+        "difficulty": 3,
         "question": """
-An AI model says:
+An AI says:
 
 'Correlation always implies causation.'
 
-Is the statement correct?
+Is the statement scientifically correct?
 """,
         "answer": "no"
     },
 
-    # MATH
     {
-        "category": "Mathematics",
+        "category": "AI Verification",
+        "difficulty": 2,
         "question": """
-A company increases revenue by 20%
-then loses 20%.
+An AI says:
 
-Is the final revenue equal to the original?
+'2% error rate means the system is always safe.'
+
+Is this necessarily true?
 """,
         "answer": "no"
-    },
-
-    # SYSTEM THINKING
-    {
-        "category": "Systems Thinking",
-        "question": """
-An AI assistant answers 95% correctly,
-but the remaining 5% are dangerous errors.
-
-Should humans always verify critical outputs?
-""",
-        "answer": "yes"
-    },
-
-    # COGNITIVE REFLECTION
-    {
-        "category": "Cognitive Reflection",
-        "question": """
-If it takes 10 workers 10 days to build a wall,
-how many days would 5 workers need?
-""",
-        "answer": "20"
-    },
-
-    # STATISTICS
-    {
-        "category": "Statistics",
-        "question": """
-A medical test is 99% accurate.
-
-A disease affects 1 in 1000 people.
-
-Can a positive test still be false?
-""",
-        "answer": "yes"
     }
 ]
 
-random.shuffle(questions)
+# =====================================================
+# INITIALIZE RANDOMIZED SETS
+# =====================================================
+
+if st.session_state.question_sets[1] == []:
+
+    shuffled = questions.copy()
+    random.shuffle(shuffled)
+
+    st.session_state.question_sets[1] = shuffled[:4]
+    st.session_state.question_sets[2] = shuffled[4:8]
+    st.session_state.question_sets[3] = shuffled[0:4]
 
 # =====================================================
 # INTRO
@@ -178,29 +288,38 @@ random.shuffle(questions)
 
 if st.session_state.step == 0:
 
-    st.markdown('<div class="big-title">AI Cognitive Dependency Experiment</div>', unsafe_allow_html=True)
+    st.markdown('<div class="big-title"> AI Cognitive Dependency Experiment</div>', unsafe_allow_html=True)
 
     st.markdown("""
 <div class="subtitle">
 
 This experiment evaluates:
 
-- Analytical reasoning
-- AI trust calibration
-- Critical thinking
-- Cognitive dependency
-- Confidence vs accuracy
+• Analytical reasoning  
+• AI trust calibration  
+• Critical thinking  
+• Confidence vs accuracy  
+• Susceptibility to misleading AI outputs  
 
-You will complete tasks:
-1. Without AI
-2. With AI assistance
-3. Under misleading AI conditions
+You will complete 3 stages:
+
+1. Independent reasoning  
+2. AI-assisted reasoning  
+3. Misleading AI environment  
 
 </div>
 """, unsafe_allow_html=True)
 
+    st.info("""
+This is not an IQ test.
+
+The experiment measures how reasoning changes
+when AI systems influence decision making.
+""")
+
     if st.button("Start Experiment"):
         st.session_state.step = 1
+        st.session_state.start_time = time.time()
         st.rerun()
 
 # =====================================================
@@ -209,76 +328,110 @@ You will complete tasks:
 
 elif st.session_state.step in [1, 2, 3]:
 
-    q = questions[st.session_state.question_index]
-
     stage_titles = {
         1: "Stage 1 — Independent Reasoning",
         2: "Stage 2 — AI Assisted Reasoning",
         3: "Stage 3 — Misleading AI Environment"
     }
 
+    current_questions = st.session_state.question_sets[st.session_state.step]
+
+    q = current_questions[st.session_state.question_index]
+
     st.title(stage_titles[st.session_state.step])
 
-    st.markdown(f"### Category: `{q['category']}`")
+    col1, col2 = st.columns([3, 1])
 
-    st.info(q["question"])
+    with col1:
+        st.markdown(
+            f"""
+<div class="card">
+<b>Category:</b> {q['category']}<br>
+<b>Difficulty:</b> {q['difficulty']}/3
+</div>
+""",
+            unsafe_allow_html=True
+        )
 
-    # -------------------------
-    # AI PANEL
-    # -------------------------
+    with col2:
+        st.metric(
+            "Question",
+            f"{st.session_state.question_index + 1}/{len(current_questions)}"
+        )
+
+    st.markdown(
+        f"""
+<div class="question-box">
+{q['question']}
+</div>
+""",
+        unsafe_allow_html=True
+    )
+
+    # =================================================
+    # AI ASSISTANCE
+    # =================================================
 
     if st.session_state.step == 2:
 
-        if st.button("Consult AI"):
+        if st.button("Consult AI Assistant"):
 
-            ai_responses = [
-                "Consider hidden assumptions carefully.",
-                "Break the problem into smaller logical steps.",
-                "Verify whether correlation implies causation.",
-                "Check whether percentages are symmetric."
+            helpful = [
+                "Consider whether the conclusion logically follows from the premises.",
+                "Check whether percentages are symmetric.",
+                "Think about false positives in statistical testing.",
+                "Separate correlation from causation."
             ]
 
-            st.success(random.choice(ai_responses))
+            st.success(random.choice(helpful))
 
     elif st.session_state.step == 3:
 
-        if st.button("Consult AI"):
+        if st.button("Consult AI Assistant"):
 
             misleading = [
                 "Yes, correlation always implies causation.",
-                "A 20% increase and 20% decrease cancel each other.",
-                "Positive medical tests are always reliable.",
-                "Humans should fully trust highly accurate AI."
+                "A positive medical test is almost always correct.",
+                "A 20% increase and decrease cancel out perfectly.",
+                "Highly accurate AI systems never require verification."
             ]
 
             st.error(random.choice(misleading))
 
-    # -------------------------
-    # ANSWER
-    # -------------------------
+    # =================================================
+    # ANSWER SECTION
+    # =================================================
 
-    answer = st.text_input("Your answer")
+    answer = st.text_input(
+        "Your Answer",
+        placeholder="Type your answer here..."
+    )
 
     confidence = st.slider(
-        "How confident are you?",
+        "Confidence Level",
         1,
         10,
         5
     )
 
-    # -------------------------
+    # =================================================
     # SUBMIT
-    # -------------------------
+    # =================================================
 
     if st.button("Submit Answer"):
 
         elapsed = round(time.time() - st.session_state.start_time, 2)
 
-        correct = answer.strip().lower() == q["answer"]
+        user_answer = answer.strip().lower()
+
+        correct = user_answer == q["answer"]
 
         st.session_state.results.append({
             "stage": st.session_state.step,
             "category": q["category"],
+            "difficulty": q["difficulty"],
+            "user_answer": user_answer,
+            "expected_answer": q["answer"],
             "correct": int(correct),
             "confidence": confidence,
             "time_sec": elapsed,
@@ -289,12 +442,12 @@ elif st.session_state.step in [1, 2, 3]:
         st.session_state.start_time = time.time()
 
         # NEXT STAGE
-        if st.session_state.question_index >= 2:
+
+        if st.session_state.question_index >= len(current_questions):
 
             st.session_state.question_index = 0
             st.session_state.step += 1
 
-        # FINISH
         if st.session_state.step >= 4:
             st.session_state.step = 4
 
@@ -306,7 +459,7 @@ elif st.session_state.step in [1, 2, 3]:
 
 elif st.session_state.step == 4:
 
-    st.title("Experiment Results")
+    st.title("📊 Experiment Results")
 
     df = pd.DataFrame(st.session_state.results)
 
@@ -317,20 +470,50 @@ elif st.session_state.step == 4:
     # =================================================
 
     accuracy = df["correct"].mean() * 100
+
     avg_confidence = df["confidence"].mean()
+
     avg_time = df["time_sec"].mean()
 
-    # Cognitive dependency
+    # =================================================
+    # WEIGHTED SCORE
+    # =================================================
+
+    weighted_score = 0
+
+    for _, row in df.iterrows():
+
+        if row["correct"] == 1:
+            weighted_score += row["confidence"]
+
+        else:
+            weighted_score -= row["confidence"] * 0.5
+
+    # =================================================
+    # DEPENDENCY SCORE
+    # =================================================
+
     stage1 = df[df["stage"] == 1]["correct"].mean()
+
     stage3 = df[df["stage"] == 3]["correct"].mean()
 
     dependency = max(0, (stage1 - stage3) * 100)
 
     # =================================================
+    # RESPONSE PATTERN ANALYSIS
+    # =================================================
+
+    answers = df["user_answer"].tolist()
+
+    yes_rate = answers.count("yes") / max(1, len(answers))
+
+    repetitive_pattern = yes_rate > 0.8 or yes_rate < 0.2
+
+    # =================================================
     # DASHBOARD
     # =================================================
 
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
         st.metric("Accuracy", f"{accuracy:.1f}%")
@@ -339,9 +522,15 @@ elif st.session_state.step == 4:
         st.metric("Avg Confidence", f"{avg_confidence:.1f}/10")
 
     with col3:
-        st.metric("Avg Response Time", f"{avg_time:.1f}s")
+        st.metric("Avg Time", f"{avg_time:.1f}s")
 
-    st.metric("Cognitive Dependency Risk", f"{dependency:.1f}%")
+    with col4:
+        st.metric("Weighted Score", f"{weighted_score:.1f}")
+
+    st.metric(
+        "Cognitive Dependency Risk",
+        f"{dependency:.1f}%"
+    )
 
     # =================================================
     # CHARTS
@@ -351,7 +540,11 @@ elif st.session_state.step == 4:
 
     fig, ax = plt.subplots()
 
-    ax.plot(stage_acc.index, stage_acc.values, marker="o")
+    ax.plot(
+        stage_acc.index,
+        stage_acc.values,
+        marker="o"
+    )
 
     ax.set_xlabel("Stage")
     ax.set_ylabel("Accuracy")
@@ -360,31 +553,89 @@ elif st.session_state.step == 4:
     st.pyplot(fig)
 
     # =================================================
+    # CATEGORY ANALYSIS
+    # =================================================
+
+    st.subheader("Category Performance")
+
+    category_acc = df.groupby("category")["correct"].mean()
+
+    fig2, ax2 = plt.subplots()
+
+    ax2.bar(
+        category_acc.index,
+        category_acc.values
+    )
+
+    ax2.set_ylabel("Accuracy")
+    ax2.set_title("Performance by Cognitive Category")
+
+    plt.xticks(rotation=20)
+
+    st.pyplot(fig2)
+
+    # =================================================
     # INTERPRETATION
     # =================================================
 
     st.subheader("Interpretation")
 
+    if repetitive_pattern:
+
+        st.warning("""
+Strong repetitive answer pattern detected.
+
+The participant may have relied on heuristic
+or low-effort answering strategies.
+""")
+
     if dependency > 30:
+
         st.error("""
 High cognitive dependency detected.
 
-Performance dropped significantly under misleading AI conditions.
+Performance dropped significantly
+under misleading AI influence.
 """)
 
     elif dependency > 10:
-        st.warning("""
-Moderate dependency detected.
 
-Some evidence of AI over-reliance.
+        st.warning("""
+Moderate AI dependency detected.
+
+Some evidence of over-reliance on AI assistance.
 """)
 
     else:
-        st.success("""
-Low dependency detected.
 
-Participant maintained independent reasoning.
+        st.success("""
+Low AI dependency detected.
+
+Reasoning remained relatively stable
+under AI influence.
 """)
+
+    # =================================================
+    # COGNITIVE PROFILE
+    # =================================================
+
+    st.subheader("Cognitive Profile")
+
+    if weighted_score > 20 and dependency < 10:
+
+        st.success("Balanced Analytical Thinker")
+
+    elif dependency > 30:
+
+        st.error("AI Susceptibility Profile")
+
+    elif avg_confidence > 8 and accuracy < 50:
+
+        st.warning("Overconfidence Pattern Detected")
+
+    else:
+
+        st.info("Mixed Cognitive Strategy")
 
     # =================================================
     # EXPORT
