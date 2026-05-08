@@ -524,10 +524,12 @@ elif st.session_state.step == 4:
 
     df = pd.DataFrame(st.session_state.results)
 
-    st.dataframe(
-        df,
-        use_container_width=True
-    )
+    display_df = df.drop(columns=["used_ai"])
+
+st.dataframe(
+    display_df,
+    use_container_width=True
+)
 
     # =================================================
     # METRICS
