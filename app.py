@@ -60,6 +60,8 @@ html, body, [class*="css"] {
     border-radius: 15px;
     border-left: 5px solid #3B82F6;
     font-size: 18px;
+    color: white;
+    line-height: 1.7;
 }
 
 .stButton>button {
