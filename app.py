@@ -25,14 +25,7 @@ html, body, [class*="css"] {
     font-family: 'Inter', sans-serif;
 }
 
-/* Main Background */
-
-.stApp {
-    background-color: #0B1120;
-    color: white;
-}
-
-/* Remove top spacing */
+/* Main layout */
 
 .block-container {
     padding-top: 2rem;
@@ -42,62 +35,47 @@ html, body, [class*="css"] {
 /* Typography */
 
 .big-title {
-    font-size: 52px;
+    font-size: 48px;
     font-weight: 800;
-    color: white;
+    color: #111827;
     margin-bottom: 10px;
 }
 
 .subtitle {
-    color: #9CA3AF;
+    color: #4B5563;
     font-size: 18px;
-    line-height: 1.8;
+    line-height: 1.7;
     margin-bottom: 30px;
 }
 
 /* Cards */
 
 .card {
-    background: #111827;
+    background: white;
     padding: 24px;
     border-radius: 18px;
-    border: 1px solid #1F2937;
-    color: white;
+    border: 1px solid #E5E7EB;
     margin-bottom: 20px;
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
-}
-
-.card b {
-    color: white;
 }
 
 /* Question Box */
 
 .question-box {
-    background: linear-gradient(
-        135deg,
-        #0F172A,
-        #111827
-    );
-
+    background: #F9FAFB;
     padding: 30px;
     border-radius: 18px;
+    border-left: 6px solid #2563EB;
 
-    border-left: 6px solid #3B82F6;
-
-    color: white;
+    color: #111827;
 
     font-size: 22px;
     line-height: 1.8;
     font-weight: 500;
 
     margin-bottom: 20px;
-
-    box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
 }
 
 .question-box p {
-    color: white !important;
     margin: 0;
 }
 
@@ -111,74 +89,30 @@ html, body, [class*="css"] {
 
     border: none;
 
-    background: linear-gradient(
-        90deg,
-        #2563EB,
-        #3B82F6
-    );
-
+    background: #2563EB;
     color: white;
+
     font-size: 16px;
     font-weight: 600;
-
-    transition: 0.2s ease;
 }
 
 .stButton > button:hover {
-    transform: scale(1.01);
+    background: #1D4ED8;
 }
 
 /* Inputs */
 
 .stTextInput input {
-    background-color: #111827 !important;
-    color: white !important;
-
-    border: 1px solid #374151 !important;
     border-radius: 12px !important;
-
-    height: 3em;
-}
-
-.stTextInput label {
-    color: white !important;
-    font-weight: 500;
-}
-
-/* Slider */
-
-.stSlider label {
-    color: white !important;
 }
 
 /* Metrics */
 
 [data-testid="metric-container"] {
-    background: #111827;
-    border: 1px solid #1F2937;
+    background: white;
+    border: 1px solid #E5E7EB;
     padding: 15px;
     border-radius: 16px;
-}
-
-[data-testid="stMetricLabel"] {
-    color: #D1D5DB;
-}
-
-[data-testid="stMetricValue"] {
-    color: white;
-}
-
-/* Tables */
-
-[data-testid="stDataFrame"] {
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-/* Success / Warning */
-
-.stAlert {
-    border-radius: 14px;
 }
 
 </style>
